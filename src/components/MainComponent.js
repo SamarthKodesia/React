@@ -48,14 +48,15 @@ class Main extends Component {
   render() {
 
     const HomePage = () => {
+      console.log("In main "+this.props.dishes.errMess);
       return (
         <Home 
               dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
               dishesLoading = {this.props.dishes.isLoading}
-              dishesErrMsg = {this.props.dishes.ErrMess}
+              dishesErrMsg = {this.props.dishes.errMess}
               promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
               promosLoading = {this.props.promotions.isLoading}
-              promosErrMsg = {this.props.promotions.ErrMess}
+              promosErrMsg = {this.props.promotions.errMess}
               leader={this.props.leaders.filter((leader) => leader.featured)[0]}
           />
       );
