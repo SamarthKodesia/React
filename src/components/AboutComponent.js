@@ -1,44 +1,64 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from './shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 
 
 
 function RenderLeader({ leaders }) {
-
-    const leader = leaders.map((lead) => {
+    console.log("Inside about us: " + JSON.stringify(leaders));
+    const leader = leaders.leaders.map((lead) => {
         return (
-            <div key={lead.id} className="col-12 mt-5">
-            <Media tag="li">
-              <Media left middle>
-                  <Media object src={lead.image} alt={lead.name} />
-              </Media>
-              <Media body className="ml-5">
-                <Media heading>{lead.name}</Media>
-                <Media subheading>{lead.designation}</Media><br/>
-                <p>{lead.description}</p>
-              </Media>
-            </Media>
-          </div>
+                <Fade>
+                    <div key={lead.id} className="col-12 mt-5">
+                        <Media tag="li">
+                            <Media left middle>
+                                <Media object src={baseUrl + lead.image} alt={lead.name} />
+                            </Media>
+                            <Media body className="ml-5">
+                                <Media heading>{lead.name}</Media>
+                                <Media subheading>{lead.designation}</Media><br />
+                                <p>{lead.description}</p>
+                            </Media>
+                        </Media>
+                    </div>
+                </Fade>
         );
     });
-    return (
-        <div className="col-12">
-            <Media list>
-                {leader}
-            </Media>
-        </div>
-    );
+    if (leaders.isLoading) {
+        return (
+            <div className='container'>
+                <div className='row'>
+                    <Loading />
+                </div>
+
+            </div>
+        );
+    }
+    else if (leaders.errMess) {
+        return (
+            <div className='container'>
+                <div className='row'>
+                    <h4>{leaders.errMess}</h4>
+                </div>
+
+            </div>
+        );
+    }
+    else
+        return (
+            <div className="col-12">
+                <Media list>
+                    <Stagger in>
+                        {leader}
+                    </Stagger>
+                </Media>
+            </div>
+        );
 }
 function About(props) {
-
-    // const leaders = props.leaders.map((leader) => {
-    //     return (
-    //         <div>
-    //         <p>Leader {leader.name}</p>
-    //         </div>
-    //     );
-    // });
 
     return (
         <div className="container">
@@ -94,7 +114,6 @@ function About(props) {
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
-
                 <RenderLeader leaders={props.leaders} />
                 {/* <div className="col-12">
                     <Media list>
